@@ -9,7 +9,7 @@ fi
 l2=$(echo "$1" | cut -d"-" -f1)
 l1=$(echo "$1" | cut -d"-" -f2)
 
-input_file="../rvsol/lib/verse/packages/contracts-bedrock/deploy-config/$l1.json"
+input_file="../rvsol/lib/optimism/packages/contracts-bedrock/deploy-config/$l1.json"
 output_file="deploy-config/$1.json"
 
 if [ ! -f "$input_file" ]; then

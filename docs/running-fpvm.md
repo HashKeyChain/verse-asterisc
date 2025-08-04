@@ -122,7 +122,7 @@ What is a FPVM?
 - Finally, Asterisc can execute through this json
 
 ### Step 2.1: Compiling op-program into RISC-V
-Navigate to `rvsol/lib/verse/op-program`, and run:
+Navigate to `rvsol/lib/optimism/op-program`, and run:
 ```bash
 make op-program-client-riscv
 ```

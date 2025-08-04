@@ -71,7 +71,7 @@ make build-rvgo
 
 # Transform RISCV op-program client binary into first VM state.
 # This outputs state.bin.gz (VM state) and meta.json (for debug symbols).
-./rvgo/bin/asterisc load-elf --path=./rvsol/lib/verse/op-program/bin-riscv/op-program-client-riscv.elf
+./rvgo/bin/asterisc load-elf --path=./rvsol/lib/optimism/op-program/bin-riscv/op-program-client-riscv.elf
 
 # Run asterisc emulator (with example inputs)
 # Note that the server-mode op-program command is passed into asterisc (after the --),
@@ -89,7 +89,7 @@ make build-rvgo
     --snapshot-at '%1000000000' \
     --input ./state.bin.gz \
     -- \
-    ./rvsol/lib/verse/op-program/bin/op-program \
+    ./rvsol/lib/optimism/op-program/bin/op-program \
     --network <network name> \
     --l1 <L1_URL> \
     --l2 <L2_URL> \
@@ -113,7 +113,7 @@ make build-rvgo
 
 ### Local Devnet
 
-- Spawn local devnet by running `make devnet-up` at `rvsol/lib/verse`
+- Spawn local devnet by running `make devnet-up` at `rvsol/lib/optimism`
 - Run asterisc deployment script `deploy.sh` at `rvsol/scripts`
 
 ### Sepolia

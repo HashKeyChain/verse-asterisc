@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-MONOREPO_ROOT=./rvsol/lib/verse
+MONOREPO_ROOT=./rvsol/lib/optimism
 
 cp -r ${MONOREPO_ROOT}/.devnet .devnet
 mkdir -p packages/contracts-bedrock

@@ -42,7 +42,7 @@ func applyAsteriscConfig(
 	require := require.New(t)
 	root := op_e2e_challenger.FindMonorepoRoot(t)
 	c.Asterisc.VmBin = root + "rvgo/bin/asterisc"
-	c.Asterisc.Server = root + "rvsol/lib/verse/op-program/bin/op-program"
+	c.Asterisc.Server = root + "rvsol/lib/optimism/op-program/bin/op-program"
 	c.AsteriscAbsolutePreState = root + "rvgo/bin/prestate.bin.gz"
 	c.Asterisc.SnapshotFreq = 10_000_000
 

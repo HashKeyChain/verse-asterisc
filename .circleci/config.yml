@@ -129,7 +129,7 @@ commands:
     steps:
       - run:
           command: just install
-          working_directory: rvsol/lib/verse/packages/contracts-bedrock
+          working_directory: rvsol/lib/optimism/packages/contracts-bedrock
 
 jobs:
   check-optimism-version-match:
@@ -151,7 +151,7 @@ jobs:
       - run:
           name: Check L1 geth version
           command: ./ops/scripts/geth-version-checker.sh || (echo "geth version is wrong, update ci-builder"; false)
-          working_directory: rvsol/lib/verse
+          working_directory: rvsol/lib/optimism
       - install-contracts-dependencies
       - restore_cache:
           name: Restore Go build cache
@@ -164,24 +164,24 @@ jobs:
       - run:
           name: Pull artifacts
           command: bash scripts/ops/pull-artifacts.sh
-          working_directory: rvsol/lib/verse/packages/contracts-bedrock
+          working_directory: rvsol/lib/optimism/packages/contracts-bedrock
       - run:
           name: Build contracts
           command: forge build --deny-warnings --skip test
           environment:
             FOUNDRY_PROFILE: ci
-          working_directory: rvsol/lib/verse/packages/contracts-bedrock
+          working_directory: rvsol/lib/optimism/packages/contracts-bedrock
       - run:
           name: Generate default allocs
           command: make devnet-allocs-tests
-          working_directory: rvsol/lib/verse
+          working_directory: rvsol/lib/optimism
       - save_cache:
           name: Save Go build cache
           key: golang-build-cache-contracts-build-{{ checksum "go.sum" }}
           paths:
             - "/root/.cache/go-build"
       - persist_to_workspace:
-          root: rvsol/lib/verse
+          root: rvsol/lib/optimism
           paths:
             - "packages/contracts-bedrock/cache"
             - "packages/contracts-bedrock/artifacts"
@@ -197,17 +197,17 @@ jobs:
       - checkout-with-monorepo
       - install-dependencies
       - install-go-modules:
-          from: rvsol/lib/verse/go.sum
+          from: rvsol/lib/optimism/go.sum
       - run:
           name: Build op-program-client-riscv
           command: make op-program-client-riscv
-          working_directory: rvsol/lib/verse/op-program
+          working_directory: rvsol/lib/optimism/op-program
       - run:
           name: Copy op-program-client-riscv to op-program-artifacts
           command: cp -r bin op-program-artifacts
-          working_directory: rvsol/lib/verse/op-program
+          working_directory: rvsol/lib/optimism/op-program
       - persist_to_workspace:
-          root: rvsol/lib/verse/op-program
+          root: rvsol/lib/optimism/op-program
           paths:
             - "op-program-artifacts"
 
@@ -223,8 +223,8 @@ jobs:
       - run:
           name: Build op-program
           command: |
-            make -C rvsol/lib/verse/op-program op-program-host
-            cp rvsol/lib/verse/op-program/bin/op-program tests/op-program-test/
+            make -C rvsol/lib/optimism/op-program op-program-host
+            cp rvsol/lib/optimism/op-program/bin/op-program tests/op-program-test/
       - run: 
           name: Run op-program
           command: |
@@ -355,7 +355,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - install-go-modules:
-          from: rvsol/lib/verse/go.sum
+          from: rvsol/lib/optimism/go.sum
       - run:
           name: Make op-program at monorepo
           command: make op-program
@@ -415,7 +415,7 @@ jobs:
       - run:
           name: Switch to tag
           command: |
-            cd rvsol/lib/verse
+            cd rvsol/lib/optimism
             git fetch
             git checkout "op-program/v<<parameters.version>>"
             git submodule update --init --recursive

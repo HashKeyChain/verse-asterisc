@@ -8,7 +8,7 @@ To run op-program in CI, we need following requirements:
 - chain-artifacts: rollup config and L2 genesis of devnet
 - captured preimages: preimage key and values which are used by op-program
 
-These requirements should be generated in the local machine when `rvsol/lib/verse` submodule is updated.
+These requirements should be generated in the local machine when `rvsol/lib/optimism` submodule is updated.
 
 To generate requirements, simply run `PYTHON_PATH={PYTHON_BIN_PATH} capture.sh` in the local machine, 
 and commit all generated files!

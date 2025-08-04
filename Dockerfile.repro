@@ -29,18 +29,18 @@ ARG TARGETOS TARGETARCH
 # Build the asterisc, op-program, and op-program-client-riscv.elf binaries.
 RUN --mount=type=cache,target=/root/.cache/go-build cd rvgo && make build  \
     GOOS=$TARGETOS GOARCH=$TARGETARCH GITCOMMIT=$GIT_COMMIT GITDATE=$GIT_DATE VERSION="ASTERISC_VERSION"
-RUN --mount=type=cache,target=/root/.cache/go-build cd rvsol/lib/verse/op-program && make op-program-host  \
+RUN --mount=type=cache,target=/root/.cache/go-build cd rvsol/lib/optimism/op-program && make op-program-host  \
     GOOS=$TARGETOS GOARCH=$TARGETARCH GITCOMMIT=$GIT_COMMIT GITDATE=$GIT_DATE VERSION="$OP_PROGRAM_VERSION"
-RUN --mount=type=cache,target=/root/.cache/go-build cd rvsol/lib/verse/op-program && make op-program-client-riscv  \
+RUN --mount=type=cache,target=/root/.cache/go-build cd rvsol/lib/optimism/op-program && make op-program-client-riscv  \
     GOOS=linux GOARCH=mips GOMIPS=softfloat GITCOMMIT=$GIT_COMMIT GITDATE=$GIT_DATE VERSION="$OP_PROGRAM_VERSION"
 
 # Run the op-program-client-riscv.elf binary directly through asterisc's load-elf subcommand.
-RUN /app/rvgo/bin/asterisc load-elf --path /app/rvsol/lib/verse/op-program/bin/op-program-client-riscv.elf --out /app/prestate.json --meta ""
+RUN /app/rvgo/bin/asterisc load-elf --path /app/rvsol/lib/optimism/op-program/bin/op-program-client-riscv.elf --out /app/prestate.json --meta ""
 
 # Exports files to the specified output location.
 # Writing files to host requires buildkit to be enabled.
 # e.g. `BUILDKIT=1 docker build ...`
 FROM scratch AS export-stage
-COPY --from=builder /app/rvsol/lib/verse/op-program/bin/op-program .
-COPY --from=builder /app/rvsol/lib/verse/op-program/bin/op-program-client-riscv.elf .
+COPY --from=builder /app/rvsol/lib/optimism/op-program/bin/op-program .
+COPY --from=builder /app/rvsol/lib/optimism/op-program/bin/op-program-client-riscv.elf .
 COPY --from=builder /app/prestate.json .

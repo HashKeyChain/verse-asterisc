@@ -1,7 +1,7 @@
 #!/bin/bash
 
 module_name="github.com/ethereum-optimism/optimism"
-submodule_path="rvsol/lib/verse"
+submodule_path="rvsol/lib/optimism"
 
 # Fetch the version from go.mod
 go_list_version=$(go list -m -f '{{.Version}}' $module_name)
