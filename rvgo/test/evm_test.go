@@ -26,7 +26,8 @@ import (
 )
 
 type dummyChain struct {
-	startTime uint64
+	startTime   uint64
+	chainConfig *params.ChainConfig
 }
 
 // Engine retrieves the chain's consensus engine.
@@ -39,6 +40,11 @@ func (d *dummyChain) GetHeader(h common.Hash, n uint64) *types.Header {
 	parentHash := common.Hash{0: 0xff}
 	binary.BigEndian.PutUint64(parentHash[1:], n-1)
 	return fakeHeader(n, parentHash)
+}
+
+// Config returns the chain's configuration.
+func (d *dummyChain) Config() *params.ChainConfig {
+	return d.chainConfig
 }
 
 func fakeHeader(n uint64, parentHash common.Hash) *types.Header {
@@ -96,7 +102,7 @@ func newEVMEnv(t *testing.T, contracts *Contracts, addrs *Addresses) *vm.EVM {
 	// Temporary hack until Cancun is activated on mainnet
 	chainCfg := params.MainnetChainConfig
 	offsetBlocks := uint64(1000)
-	bc := &dummyChain{startTime: *chainCfg.CancunTime + offsetBlocks*12}
+	bc := &dummyChain{chainConfig: chainCfg, startTime: *chainCfg.CancunTime + offsetBlocks*12}
 	header := bc.GetHeader(common.Hash{}, 19426587+offsetBlocks)
 	header.Time = bc.startTime
 	db := rawdb.NewMemoryDatabase()
@@ -105,7 +111,7 @@ func newEVMEnv(t *testing.T, contracts *Contracts, addrs *Addresses) *vm.EVM {
 	blockContext := core.NewEVMBlockContext(header, bc, nil, chainCfg, statedb)
 	vmCfg := vm.Config{}
 
-	env := vm.NewEVM(blockContext, vm.TxContext{}, statedb, chainCfg, vmCfg)
+	env := vm.NewEVM(blockContext, statedb, chainCfg, vmCfg)
 	env.StateDB.SetCode(addrs.RISCV, contracts.RISCV.DeployedBytecode.Object)
 	env.StateDB.SetCode(addrs.Oracle, contracts.Oracle.DeployedBytecode.Object)
 	env.StateDB.SetState(addrs.RISCV, common.Hash{}, common.BytesToHash(addrs.Oracle.Bytes())) // set storage slot pointing to preimage oracle
@@ -137,14 +143,14 @@ func stepEVM(t *testing.T, env *vm.EVM, wit *fast.StepWitness, addrs *Addresses,
 	if wit.HasPreimage() {
 		input, err := wit.EncodePreimageOracleInput(fast.LocalContext{})
 		require.NoError(t, err)
-		ret, leftOverGas, err := env.Call(vm.AccountRef(addrs.Sender), addrs.Oracle, input, startingGas, uint256.NewInt(0))
+		ret, leftOverGas, err := env.Call(addrs.Sender, addrs.Oracle, input, startingGas, uint256.NewInt(0))
 		require.NoError(t, err, "evm must not fail (ret: %x, gas: %d)", ret, startingGas-leftOverGas)
 	}
 
 	input, err := wit.EncodeStepInput(fast.LocalContext{})
 	require.NoError(t, err)
 
-	ret, leftOverGas, err := env.Call(vm.AccountRef(addrs.Sender), addrs.RISCV, input, startingGas, uint256.NewInt(0))
+	ret, leftOverGas, err := env.Call(addrs.Sender, addrs.RISCV, input, startingGas, uint256.NewInt(0))
 	if revertCode != nil {
 		require.ErrorIs(t, err, vm.ErrExecutionReverted)
 		require.Equal(t, ret, revertCode)
