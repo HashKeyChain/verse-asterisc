@@ -18,7 +18,7 @@ CREATE_TX_ABI_TYPES = ["uint32", "bytes32", "bytes"]
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(current_dir))
-optimism_root = os.path.join(project_root, "rvsol/lib/optimism")
+optimism_root = os.path.join(project_root, "rvsol/lib/verse")
 
 with open(os.path.join(optimism_root, ".devnet/addresses.json"), "r") as f:
     addrs = json.load(f)

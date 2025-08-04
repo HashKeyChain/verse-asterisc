@@ -1,4 +1,4 @@
-MONOREPO_ROOT=./rvsol/lib/optimism
+MONOREPO_ROOT=./rvsol/lib/verse
 
 build-rvgo:
 	make -C ./rvgo build

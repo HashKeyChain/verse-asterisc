@@ -1,6 +1,6 @@
 [submodule "rvsol/lib/forge-std"]
 	path = rvsol/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "rvsol/lib/optimism"]
-	path = rvsol/lib/optimism
-	url = https://github.com/ethereum-optimism/optimism
+[submodule "rvsol/lib/verse"]
+	path = rvsol/lib/verse
+	url = https://github.com/HashKeyChain/verse.git

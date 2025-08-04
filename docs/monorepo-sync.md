@@ -1,13 +1,13 @@
 # Introduction
 
-Asterisc has a dependency to the optimism monorepo at `rvsol/lib/optimism`. Asterisc uses various components from the monorepo, and depends on testing utilities for op-e2e, etc testing. 
+Asterisc has a dependency to the optimism monorepo at `rvsol/lib/verse`. Asterisc uses various components from the monorepo, and depends on testing utilities for op-e2e, etc testing. 
 
 Periodically, optimism monorepo must be updated in order to support for newer features or utilities. 
 
 This guide will walk you through what must be checked when updating the monorepo dependency. 
 
 ## Update Optimism commit
-- Go to `rvsol/lib/optimism` and perform `git checkout` to a specific commit you want to check out. 
+- Go to `rvsol/lib/verse` and perform `git checkout` to a specific commit you want to check out. 
 
 - Go to `go.mod` and look for `github.com/ethereum-optimism/optimism` entry. Then, update the commit hash and commit datetime like the following:
 ```
@@ -30,7 +30,7 @@ Update the go version in `go.mod` to match the monorepo's version.
 ```
 default: us-docker.pkg.dev/oplabs-tools-artifacts/images/ci-builder:v0.53.0
 ```
-- Compare the ci-builder's version with `rvsol/lib/optimism/.circleci/config.yml`, and update it to match the monorepo's version
+- Compare the ci-builder's version with `rvsol/lib/verse/.circleci/config.yml`, and update it to match the monorepo's version
 - Go to `.github/workflows/ci.yaml` and update `go-version` if necessary. 
 
 

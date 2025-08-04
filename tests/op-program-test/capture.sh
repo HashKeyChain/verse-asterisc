@@ -8,7 +8,7 @@ fi
 absolute_python_path="$(cd "$(dirname "$PYTHON_PATH")"; pwd)/$(basename "$PYTHON_PATH")"
 script_dir=$(cd "$(dirname $0)"; pwd)
 root_dir=$(dirname $(dirname $script_dir))
-optimism_dir=$root_dir/rvsol/lib/optimism
+optimism_dir=$root_dir/rvsol/lib/verse
 
 # Build asterisc binary
 cd $root_dir
